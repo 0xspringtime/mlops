@@ -1,1 +1,4 @@
 /data
+/loaded_data.pkl
+/preprocessed_data.pkl
+/model

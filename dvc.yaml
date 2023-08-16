@@ -1,0 +1,21 @@
+stages:
+  load_data:
+    cmd: python load_data.py
+    deps:
+    - load_data.py
+    outs:
+    - loaded_data.pkl
+  preprocess:
+    cmd: python preprocess_data.py
+    deps:
+    - loaded_data.pkl
+    - preprocess_data.py
+    outs:
+    - preprocessed_data.pkl
+  train:
+    cmd: python train_transformer.py
+    deps:
+    - preprocessed_data.pkl
+    - train_transformer.py
+    outs:
+    - model/
