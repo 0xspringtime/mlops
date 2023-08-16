@@ -3,6 +3,7 @@ from transformers import BertForSequenceClassification, Trainer, TrainingArgumen
 def train_model(preprocessed_data):
     model = BertForSequenceClassification.from_pretrained("bert-base-uncased")
     training_args = TrainingArguments(
+        output_dir="./results",
         per_device_train_batch_size=8,
         num_train_epochs=1,
         logging_dir='./logs',
