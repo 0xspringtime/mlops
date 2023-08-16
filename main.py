@@ -1,18 +1,20 @@
+# main.py
 from load_data import load_data
-from preprocess_data import tokenize_and_pad
+from preprocess_data import preprocess_data
 from train_transformer import train_model
-import torch
-from datasets import load_dataset
+from transformers import TrainingArguments
 
-data = load_dataset("squad_v2")
+data_path = 'data/data.csv'
+model_name = "bert-base-uncased"  # Replace with desired model
 
-# Convert sentences to tokenized and padded format
-texts = tokenize_and_pad(data['text'].tolist(), max_len=100)
-labels = data['label'].tolist()
+data = load_data(data_path)
+preprocessed_data = preprocess_data(data, model_name, 128)
 
-# Convert to PyTorch tensors
-texts_tensor = torch.tensor(texts, dtype=torch.long)
-labels_tensor = torch.tensor(labels, dtype=torch.long)
+training_args = TrainingArguments(
+    per_device_train_batch_size=8,
+    num_train_epochs=3,
+    logging_dir='./logs',
+)
 
-train_model(texts_tensor, labels_tensor)
+train_model(preprocessed_data, model_name, training_args)
 
