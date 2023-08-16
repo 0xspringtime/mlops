@@ -8,8 +8,8 @@ from datasets import load_dataset
 
 model_name = "bert-base-uncased"  # Replace with desired model
 
-data = load_data("squad_v2")
-preprocessed_data = preprocess_data(data, model_name, 128)
+contexts, questions = load_data("squad_v2")
+preprocessed_data = preprocess_data(contexts, questions, model_name, 128)
 
 training_args = TrainingArguments(
     per_device_train_batch_size=8,
