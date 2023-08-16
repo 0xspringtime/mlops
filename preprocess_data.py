@@ -12,6 +12,3 @@ def preprocess_data(data, model_name, max_len):
     tokenized_data = tokenizer(data, padding='max_length', max_length=max_len, truncation=True, return_tensors="pt")
     
     return tokenized_data["input_ids"]
-
-preprocessed_data = preprocess_data(data, model_name, 128)
-save_preprocessed_data(preprocessed_data)
