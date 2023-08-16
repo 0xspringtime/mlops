@@ -1,21 +1,23 @@
-# train_transformer.py
-from transformers import AutoModelForSequenceClassification, Trainer, TrainingArguments, AutoTokenizer
+from transformers import BertForSequenceClassification, Trainer, TrainingArguments
 
-def train_model(tokenized_data, model_name, train_args):
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2) # This needs to change for SQuAD
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-    # No separate labels in this case, as SQuAD isn't a classification task
-    dataset = list(zip(tokenized_data['input_ids'], tokenized_data['attention_mask']))
-
-    # Modify the trainer to work without explicit labels (labels are in tokenized_data if provided)
+def train_model(preprocessed_data):
+    model = BertForSequenceClassification.from_pretrained("bert-base-uncased")
+    training_args = TrainingArguments(
+        per_device_train_batch_size=8,
+        num_train_epochs=1,
+        logging_dir='./logs',
+    )
     trainer = Trainer(
         model=model,
-        args=train_args,
-        train_dataset=dataset,  # This needs adjustment for SQuAD
-        tokenizer=tokenizer
+        args=training_args,
+        train_dataset=preprocessed_data,
     )
-
     trainer.train()
-    model.save_pretrained("./saved_model/")
+    model.save_pretrained("model/")
+
+if __name__ == "__main__":
+    import pickle
+    with open('preprocessed_data.pkl', 'rb') as f:
+        preprocessed_data = pickle.load(f)
+    train_model(preprocessed_data)
 
