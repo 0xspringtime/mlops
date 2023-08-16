@@ -1,17 +1,18 @@
 # train_transformer.py
 from transformers import AutoModelForSequenceClassification, Trainer, TrainingArguments, AutoTokenizer
 
-def train_model(preprocessed_data, model_name, train_args):
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2) # Assuming binary classification. Modify if different.
+def train_model(tokenized_data, model_name, train_args):
+    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=2) # This needs to change for SQuAD
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    tokenized_data, labels = preprocessed_data
+    # No separate labels in this case, as SQuAD isn't a classification task
+    dataset = list(zip(tokenized_data['input_ids'], tokenized_data['attention_mask']))
 
-    dataset = list(zip(tokenized_data['input_ids'], tokenized_data['attention_mask'], labels))
+    # Modify the trainer to work without explicit labels (labels are in tokenized_data if provided)
     trainer = Trainer(
         model=model,
         args=train_args,
-        train_dataset=dataset,
+        train_dataset=dataset,  # This needs adjustment for SQuAD
         tokenizer=tokenizer
     )
 
