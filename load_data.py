@@ -13,4 +13,3 @@ def load_data(dataset_name, split='train'):
     """
     data = load_dataset(dataset_name, split=split)
     return data
-
