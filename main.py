@@ -3,11 +3,11 @@ from load_data import load_data
 from preprocess_data import preprocess_data
 from train_transformer import train_model
 from transformers import TrainingArguments
+from datasets import load_dataset
 
-data_path = 'data/data.csv'
 model_name = "bert-base-uncased"  # Replace with desired model
 
-data = load_data(data_path)
+data = load_data(squad_v2)
 preprocessed_data = preprocess_data(data, model_name, 128)
 
 training_args = TrainingArguments(
